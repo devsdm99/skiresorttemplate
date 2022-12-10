@@ -1,3 +1,4 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -67,7 +68,26 @@ class BuyForfaitScreen extends StatelessWidget {
                   },
                 ),
               ),
-              const _ForfaitContainer(),
+              ExpandableNotifier(
+                child: ScrollOnExpand(
+                  child: ExpandablePanel(
+                    collapsed: const Icon(Icons.arrow_downward),
+                    expanded: const _ForfaitContainer(),
+                    theme: ExpandableThemeData(
+                      iconColor: Colors.black,
+                      expandIcon: Icons.arrow_downward,
+                      collapseIcon: Icons.arrow_upward,
+                    ),
+                    builder: (context, collapsed, expanded) {
+                      return Expandable(
+                        collapsed: collapsed,
+                        expanded: expanded,
+                        theme: const ExpandableThemeData(crossFadePoint: 0),
+                      );
+                    },
+                  ),
+                ),
+              ),
               const SizedBox(
                 height: 10,
               ),
