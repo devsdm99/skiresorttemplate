@@ -349,17 +349,3 @@ class _SectorStatistics extends StatelessWidget {
     );
   }
 }
-
-class _WelcomeWidget extends StatelessWidget {
-  const _WelcomeWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
-      child: Text("¡Welcome Admin!", style: StylesUI.titleStyle),
-    );
-  }
-}

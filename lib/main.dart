@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skiresorttemplate/providers/home_provider.dart';
 import 'package:skiresorttemplate/providers/providers.dart';
-import 'package:skiresorttemplate/providers/shop_provider.dart';
+import 'package:skiresorttemplate/providers/forfait_provider.dart';
 import 'package:skiresorttemplate/screens/screens.dart';
 import 'package:skiresorttemplate/theme/theme.dart';
 
