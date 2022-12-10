@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:skiresorttemplate/helpers/helpers.dart';
 import 'package:skiresorttemplate/providers/providers.dart';
 import 'package:skiresorttemplate/screens/screens.dart';
 import 'package:skiresorttemplate/widgets/widgets.dart';
@@ -14,10 +13,7 @@ class BaseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: const _AppBarLogo(),
-          ),
+          appBar: const AppbarWidget(),
           bottomNavigationBar: const NavBarWidget(),
           body: Selector<NavProvider, int>(
             selector: (p0, provider) => provider.currentIndex,
@@ -41,20 +37,5 @@ class BaseScreen extends StatelessWidget {
       default:
         return const HomeScreen();
     }
-  }
-}
-
-class _AppBarLogo extends StatelessWidget {
-  const _AppBarLogo({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Image.asset(
-      ImagesHelper.mainLogo,
-      height: 70,
-    ));
   }
 }

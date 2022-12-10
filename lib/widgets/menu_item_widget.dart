@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skiresorttemplate/ui/ui.dart';
+
 class MenuItemWidget extends StatelessWidget {
   const MenuItemWidget({Key? key, required this.iconData, required this.text})
       : super(key: key);
@@ -9,7 +10,7 @@ class MenuItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 125,
+      width: MediaQuery.of(context).size.width * 0.25,
       height: 120,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -32,7 +33,12 @@ class MenuItemWidget extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Text(text, style: StylesUI.homeMenuButtonStyle)
+          Expanded(
+              child: Text(
+            text,
+            style: StylesUI.homeMenuButtonStyle,
+            textAlign: TextAlign.center,
+          ))
         ],
       ),
     );

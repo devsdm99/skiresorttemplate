@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skiresorttemplate/models/models.dart';
 import 'package:skiresorttemplate/providers/home_provider.dart';
+import 'package:skiresorttemplate/screens/buy_forfait_screen.dart';
 import 'package:skiresorttemplate/ui/ui.dart';
 import 'package:skiresorttemplate/widgets/widgets.dart';
 
@@ -66,30 +67,23 @@ class _HomeScreenState extends State<HomeScreen>
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    MenuItemWidget(
-                        iconData: Icons.cloudy_snowing,
-                        text: "Parte de la estación"),
-                    MenuItemWidget(
-                        iconData: Icons.health_and_safety,
-                        text: "Medidas Sanitarias"),
-                    MenuItemWidget(
-                        iconData: Icons.map_sharp, text: "Mapa de pistas"),
-                  ],
-                ),
                 const SizedBox(
                   height: 10,
                 ),
                 Row(
-                  children: const [
-                    BigMenuButtonWidget(
+                  children: [
+                    const BigMenuButtonWidget(
                         imgPath: "assets/home/forfaits.jpg", text: "FORFAITS"),
-                    Spacer(),
-                    MenuItemWidget(
-                        iconData: Icons.payment_rounded,
-                        text: "Compra forfait de dia")
+                    const Spacer(),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, BuyForfaitScreen.routeName);
+                      },
+                      child: const MenuItemWidget(
+                          iconData: Icons.payment_rounded,
+                          text: "Compra forfait de dia"),
+                    )
                   ],
                 ),
                 const SizedBox(

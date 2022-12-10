@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:skiresorttemplate/ui/ui.dart';
 
 class BigMenuButtonWidget extends StatelessWidget {
-  const BigMenuButtonWidget({super.key, required this.imgPath, required this.text});
+  const BigMenuButtonWidget(
+      {super.key, required this.imgPath, required this.text});
 
   final String imgPath;
   final String text;
@@ -12,7 +13,7 @@ class BigMenuButtonWidget extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        width: 260,
+        width: MediaQuery.of(context).size.width * 0.7,
         height: 140,
         decoration: BoxDecoration(
             image: DecorationImage(
