@@ -15,11 +15,11 @@ class SkiResortTheme {
           onBackground: Colors.black,
           surface: Colors.black,
           onSurface: Colors.black),
-      buttonTheme: const ButtonThemeData(
+      buttonTheme: ButtonThemeData(
           colorScheme: ColorScheme(
               brightness: Brightness.light,
-              primary: Colors.red,
-              onPrimary: Colors.white,
+              primary: Colors.yellow.shade700,
+              onPrimary: Colors.yellow.shade700,
               secondary: Colors.white,
               onSecondary: Colors.white,
               error: Colors.red,

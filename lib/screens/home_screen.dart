@@ -283,7 +283,7 @@ class _SectorStatistics extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text("El tiempo - ${model.sector}",
+            child: Text("Weather at - ${model.sector}",
                 style: StylesUI.homeTypeStyle
                     .copyWith(fontWeight: FontWeight.bold, fontSize: 18)),
           ),
@@ -324,7 +324,7 @@ class _SectorStatistics extends StatelessWidget {
                         .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   Text(
-                    "Precipitación",
+                    "Precipitation",
                     style: StylesUI.homeTypeStyle,
                   )
                 ],
@@ -337,7 +337,7 @@ class _SectorStatistics extends StatelessWidget {
                         .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   Text(
-                    "Viento",
+                    "Wind",
                     style: StylesUI.homeTypeStyle,
                   )
                 ],

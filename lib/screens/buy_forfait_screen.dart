@@ -15,6 +15,16 @@ class BuyForfaitScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
+          title: Text(
+            "Day pass",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          actions: const [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.credit_card),
+            )
+          ],
           leading: InkWell(
             onTap: () {
               Navigator.pop(context);
@@ -62,7 +72,7 @@ class BuyForfaitScreen extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .labelSmall
-                      ?.copyWith(fontWeight: FontWeight.normal),
+                      ?.copyWith(fontWeight: FontWeight.normal, fontSize: 16),
                 ),
                 const SizedBox(
                   height: 20,
@@ -116,7 +126,52 @@ class BuyForfaitScreen extends StatelessWidget {
                   category: "SENIOR GOLD > 75 : ",
                   rangeYears: "Free",
                 ),
+                const SizedBox(
+                  height: 70,
+                ),
+                const _ContinueButton()
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ContinueButton extends StatelessWidget {
+  const _ContinueButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: Align(
+          alignment: Alignment.center,
+          child: Container(
+            height: 40,
+            width: MediaQuery.of(context).size.width * 0.5,
+            decoration: BoxDecoration(
+              color: Theme.of(context).buttonTheme.colorScheme?.primary,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Continue",
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  const Icon(Icons.shopping_basket)
+                ],
+              ),
             ),
           ),
         ),
@@ -171,8 +226,8 @@ class _ForfaitsPanel extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Text(
               (forfaitProvider.totalForfaits <= 0)
-                  ? "Selecciona los forfaits"
-                  : "${forfaitProvider.totalForfaits} Pasajeros",
+                  ? "Add some ski passes"
+                  : "${forfaitProvider.totalForfaits} Pax",
               style: Theme.of(context).textTheme.labelSmall,
             ),
           ),
@@ -181,7 +236,7 @@ class _ForfaitsPanel extends StatelessWidget {
             margin: const EdgeInsets.all(10),
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
@@ -211,7 +266,7 @@ class _ForfaitsPanel extends StatelessWidget {
                   height: 20,
                 ),
                 _ForfaitCategory(
-                  title: "1 Day Junior",
+                  title: "1 Day Junior (40.20€)",
                   subtitle: "12-17 years",
                   numForfaits: forfaitProvider.juniorForfaits,
                   onLessTap: () {
@@ -227,7 +282,7 @@ class _ForfaitsPanel extends StatelessWidget {
                   height: 20,
                 ),
                 _ForfaitCategory(
-                  title: "1 Day Child",
+                  title: "1 Day Child (24.50€)",
                   subtitle: "6-11 years",
                   numForfaits: forfaitProvider.childForfaits,
                   onLessTap: () {
@@ -337,7 +392,7 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Text("Selecione la fecha",
+      child: Text("Select the date",
           style: Theme.of(context).textTheme.labelSmall),
     );
   }
@@ -377,8 +432,9 @@ class _CalendarPicker extends StatelessWidget {
                 );
               },
             );
-
-            forfaitProvider.forfaitDate = pickedDate ?? DateTime.now();
+            if (pickedDate != null) {
+              forfaitProvider.forfaitDate = pickedDate;
+            }
           },
         );
       },
