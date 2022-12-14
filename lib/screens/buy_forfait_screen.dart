@@ -67,13 +67,7 @@ class BuyForfaitScreen extends StatelessWidget {
                       .titleMedium
                       ?.copyWith(color: Colors.black),
                 ),
-                Text(
-                  "TYPES:",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(fontWeight: FontWeight.normal, fontSize: 16),
-                ),
+             
                 const SizedBox(
                   height: 20,
                 ),
@@ -146,14 +140,17 @@ class _ContinueButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 16.0),
-        child: Align(
-          alignment: Alignment.center,
-          child: Container(
-            height: 40,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Align(
+        alignment: Alignment.center,
+        child: InkWell(
+          onTap: () {},
+          borderRadius: const BorderRadius.all(
+            Radius.circular(20),
+          ),
+          child: Ink(
+            height: 50,
             width: MediaQuery.of(context).size.width * 0.5,
             decoration: BoxDecoration(
               color: Theme.of(context).buttonTheme.colorScheme?.primary,
