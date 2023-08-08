@@ -1,51 +1,52 @@
 import 'package:flutter/material.dart';
 
 class SkiResortTheme {
+  static const Color primaryColor = Color(0xFF1565C0); // Azul oscuro
+  static const Color secondaryColor = Color(0xFF42A5F5); // Azul claro
+  static const Color accentColor = Color(0xFFB71C1C); // Rojo oscuro
+  static const Color backgroundColor = Color(0xFFFFFFFF); // Blanco
+  static const Color surfaceColor = Color(0xFFF5F5F5); // Gris claro
+  static const Color primaryButtonColor = Color.fromRGBO(251, 192, 45, 1);
   static ThemeData lightTheme = ThemeData.light().copyWith(
-      primaryColor: Colors.red,
-      colorScheme: const ColorScheme(
-          brightness: Brightness.light,
-          primary: Colors.red,
-          onPrimary: Colors.white,
-          secondary: Colors.white,
-          onSecondary: Colors.white,
-          error: Colors.red,
-          onError: Colors.red,
-          background: Colors.black,
-          onBackground: Colors.black,
-          surface: Colors.black,
-          onSurface: Colors.black),
-      buttonTheme: ButtonThemeData(
-          colorScheme: ColorScheme(
-              brightness: Brightness.light,
-              primary: Colors.yellow.shade700,
-              onPrimary: Colors.yellow.shade700,
-              secondary: Colors.white,
-              onSecondary: Colors.white,
-              error: Colors.red,
-              onError: Colors.red,
-              background: Colors.black,
-              onBackground: Colors.black,
-              surface: Colors.black,
-              onSurface: Colors.black)),
-      textTheme: const TextTheme(
-        titleSmall: TextStyle(
-            color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-        titleMedium: TextStyle(
-            color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
-        titleLarge: TextStyle(
-            color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
-        labelSmall: TextStyle(
-            fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
-        labelMedium: TextStyle(
-            fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold),
-        labelLarge: TextStyle(
-            fontSize: 32, color: Colors.black, fontWeight: FontWeight.bold),
+    scaffoldBackgroundColor: backgroundColor,
+    appBarTheme: const AppBarTheme(
+        color: Colors.transparent,
+        elevation: 1,
+        iconTheme: IconThemeData(color: Colors.white)),
+    primaryColor: primaryColor,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: secondaryColor,
       ),
-      textButtonTheme: TextButtonThemeData(
-          style:
-              TextButton.styleFrom(textStyle: const TextStyle(fontSize: 20))));
+    ),
+    textTheme: TextTheme(
+      titleSmall: TextStyle(
+          color: Colors.grey.shade700,
+          fontSize: 18,
+          fontWeight: FontWeight.bold),
+      titleMedium: const TextStyle(
+          color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+      titleLarge: const TextStyle(
+          color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+      labelSmall: const TextStyle(
+          fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+      labelMedium: const TextStyle(
+          fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold),
+      labelLarge: const TextStyle(
+          fontSize: 32, color: Colors.black, fontWeight: FontWeight.bold),
+      bodySmall: TextStyle(
+        fontSize: 18,
+        color: Colors.grey.shade700,
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 20),
+      ),
+    ),
+    iconTheme: const IconThemeData(color: Colors.black),
+  );
 
-  static ThemeData darkTheme =
-      ThemeData.dark().copyWith(primaryColor: Colors.red);
+  static ThemeData darkTheme = ThemeData.dark()
+      .copyWith(primaryColor: const Color.fromARGB(255, 78, 174, 253));
 }

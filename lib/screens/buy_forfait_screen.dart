@@ -2,8 +2,12 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:skiresorttemplate/providers/cart_provider.dart';
 import 'package:skiresorttemplate/providers/forfait_provider.dart';
 import 'package:skiresorttemplate/theme/skiresort_theme.dart';
+import 'package:skiresorttemplate/widgets/add_button.dart';
+
+import '../widgets/add_to_cart_button.dart';
 
 class BuyForfaitScreen extends StatelessWidget {
   static const routeName = "BuyForfaitScreen";
@@ -11,6 +15,10 @@ class BuyForfaitScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ForfaitProvider forfaitProvider =
+        Provider.of<ForfaitProvider>(context, listen: true);
+    final CartProvider cartProvider =
+        Provider.of<CartProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -27,6 +35,7 @@ class BuyForfaitScreen extends StatelessWidget {
           ],
           leading: InkWell(
             onTap: () {
+              forfaitProvider.resetForfaits();
               Navigator.pop(context);
             },
             child: Icon(
@@ -67,7 +76,6 @@ class BuyForfaitScreen extends StatelessWidget {
                       .titleMedium
                       ?.copyWith(color: Colors.black),
                 ),
-             
                 const SizedBox(
                   height: 20,
                 ),
@@ -80,7 +88,7 @@ class BuyForfaitScreen extends StatelessWidget {
                 ),
                 const _YearsCategory(
                   category: "JUNIOR: ",
-                  rangeYears: "12-17S Years",
+                  rangeYears: "12-17 Years",
                 ),
                 const SizedBox(
                   height: 10,
@@ -123,52 +131,17 @@ class BuyForfaitScreen extends StatelessWidget {
                 const SizedBox(
                   height: 70,
                 ),
-                const _ContinueButton()
+                AddToCartButton(
+                  onTap: () {
+                    cartProvider.addForfaitsToCart(
+                        forfaitProvider.adultForfaits,
+                        forfaitProvider.juniorForfaits,
+                        forfaitProvider.childForfaits,
+                        forfaitProvider.forfaitDate);
+                    Navigator.pop(context);
+                  },
+                )
               ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ContinueButton extends StatelessWidget {
-  const _ContinueButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Align(
-        alignment: Alignment.center,
-        child: InkWell(
-          onTap: () {},
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
-          ),
-          child: Ink(
-            height: 50,
-            width: MediaQuery.of(context).size.width * 0.5,
-            decoration: BoxDecoration(
-              color: Theme.of(context).buttonTheme.colorScheme?.primary,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20),
-              ),
-            ),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "Continue",
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  const Icon(Icons.shopping_basket)
-                ],
-              ),
             ),
           ),
         ),
@@ -179,7 +152,7 @@ class _ContinueButton extends StatelessWidget {
 
 class _YearsCategory extends StatelessWidget {
   const _YearsCategory(
-      {Key? key, required this.category, required this.rangeYears})
+      {Key? key, required this.rangeYears, required this.category})
       : super(key: key);
   final String category;
   final String rangeYears;
@@ -247,7 +220,8 @@ class _ForfaitsPanel extends StatelessWidget {
             child: Column(
               children: [
                 _ForfaitCategory(
-                  title: "1 Day Adult (52.50€)",
+                  title:
+                      "1 Day Adult (${ForfaitProvider.adultForfaitPrice.toStringAsFixed(2)}€)",
                   subtitle: "18-64 years",
                   numForfaits: forfaitProvider.adultForfaits,
                   onLessTap: () {
@@ -263,7 +237,8 @@ class _ForfaitsPanel extends StatelessWidget {
                   height: 20,
                 ),
                 _ForfaitCategory(
-                  title: "1 Day Junior (40.20€)",
+                  title:
+                      "1 Day Junior (${ForfaitProvider.juniorForfaitPrice.toStringAsFixed(2)}€)",
                   subtitle: "12-17 years",
                   numForfaits: forfaitProvider.juniorForfaits,
                   onLessTap: () {
@@ -279,7 +254,8 @@ class _ForfaitsPanel extends StatelessWidget {
                   height: 20,
                 ),
                 _ForfaitCategory(
-                  title: "1 Day Child (24.50€)",
+                  title:
+                      "1 Day Child (${ForfaitProvider.childForfaitPrice.toStringAsFixed(2)}€)",
                   subtitle: "6-11 years",
                   numForfaits: forfaitProvider.childForfaits,
                   onLessTap: () {
@@ -361,18 +337,7 @@ class _ForfaitCategory extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            InkWell(
-              onTap: onPlusTap,
-              child: Container(
-                color: Colors.yellow.shade700,
-                height: 30,
-                width: 30,
-                child: Center(
-                  child:
-                      Text("+", style: Theme.of(context).textTheme.labelSmall),
-                ),
-              ),
-            )
+            AddButton(onPressed: onPlusTap)
           ],
         )
       ],

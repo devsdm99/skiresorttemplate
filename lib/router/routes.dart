@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skiresorttemplate/screens/buy_forfait_screen.dart';
 import 'package:skiresorttemplate/screens/screens.dart';
 
 class AppRoutes {
@@ -12,6 +11,7 @@ class AppRoutes {
       LoginScreen.routeName: (BuildContext context) => const LoginScreen(),
       BuyForfaitScreen.routeName: (BuildContext context) =>
           const BuyForfaitScreen(),
+      CartScreen.routeName: (BuildContext context) => const CartScreen(),
     });
 
     return appRoutes;

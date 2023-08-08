@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:skiresorttemplate/helpers/helpers.dart';
+import 'package:skiresorttemplate/providers/cart_provider.dart';
+
+import 'widgets.dart';
 
 class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
-  const AppbarWidget({super.key});
+  final String? title;
+  final bool showCart;
+  final bool isMainScreen;
+
+  const AppbarWidget(
+      {super.key, this.title, this.showCart = true, this.isMainScreen = true});
 
   @override
   Size get preferredSize => const Size.fromHeight(55);
@@ -11,20 +20,38 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: Colors.white,
+      centerTitle: isMainScreen ? false : true,
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+      leading: isMainScreen
+          ? null
+          : BackArrowButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: Stack(
-            alignment: Alignment.center,
-            children: const [
-              _CartIcon(),
-              _ItemsInCart(),
-            ],
-          ),
-        )
+        showCart
+            ? Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, "CartScreen"),
+                  child: const Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      _CartIcon(),
+                      _ItemsInCart(),
+                    ],
+                  ),
+                ),
+              )
+            : Container()
       ],
-      title: const _AppBarLogo(),
+      title: isMainScreen
+          ? const _AppBarLogo()
+          : Text(
+              title ?? "",
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
     );
   }
 }
@@ -36,9 +63,9 @@ class _CartIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Icon(
+    return Icon(
       Icons.shopping_cart,
-      color: Colors.black,
+      color: Theme.of(context).iconTheme.color,
       size: 42,
     );
   }
@@ -51,18 +78,24 @@ class _ItemsInCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Positioned(
-      top: 4,
-      child: CircleAvatar(
-        radius: 10,
-        backgroundColor: Colors.red,
-        child: Center(
-          child: Text(
-            "2",
-            style: TextStyle(fontSize: 15),
+    return Selector<CartProvider, int>(
+      selector: (_, provider) => provider.items.length,
+      builder: (context, value, child) {
+        return Positioned(
+          top: 4,
+          child: CircleAvatar(
+            radius: 10,
+            backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primary,
+            child: Center(
+              child: Text(
+                value.toString(),
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

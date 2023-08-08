@@ -13,7 +13,7 @@ class BaseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: const AppbarWidget(),
+          appBar: const AppbarWidget(title: ""),
           bottomNavigationBar: const NavBarWidget(),
           body: Selector<NavProvider, int>(
             selector: (p0, provider) => provider.currentIndex,

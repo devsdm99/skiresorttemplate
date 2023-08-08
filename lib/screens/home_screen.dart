@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen>
             padding: const EdgeInsets.all(8),
             child: Text(
               "Webcams",
-              style: StylesUI.titleStyle,
+              style: StylesUI.subtitleStyle,
             ),
           ),
           const SizedBox(
@@ -89,8 +89,8 @@ class _HomeScreenState extends State<HomeScreen>
                 const SizedBox(
                   height: 15,
                 ),
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     BigMenuButtonWidget(
                         imgPath: "assets/home/teleferico.jpg",
                         text: "VENTAJAS"),
@@ -101,8 +101,8 @@ class _HomeScreenState extends State<HomeScreen>
                 const SizedBox(
                   height: 15,
                 ),
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     BigMenuButtonWidget(
                         imgPath: "assets/home/restaurant.jpg",
                         text: "RESTAURANTE"),
@@ -113,8 +113,8 @@ class _HomeScreenState extends State<HomeScreen>
                 const SizedBox(
                   height: 15,
                 ),
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     BigMenuButtonWidget(
                         imgPath: "assets/home/moto.jpg", text: "ACTIVIDADES"),
                     Spacer(),

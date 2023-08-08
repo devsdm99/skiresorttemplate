@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
 class ForfaitProvider with ChangeNotifier {
+  static const double adultForfaitPrice = 50.00;
+  static const double juniorForfaitPrice = 40.00;
+  static const double childForfaitPrice = 30.00;
+
   DateTime? _date;
   int? _adultForfaits;
   int? _juniorForfaits;
@@ -28,6 +32,13 @@ class ForfaitProvider with ChangeNotifier {
 
   set childForfaits(int forfaits) {
     _childForfaits = forfaits;
+    notifyListeners();
+  }
+
+  void resetForfaits() {
+    _adultForfaits = 0;
+    _juniorForfaits = 0;
+    _childForfaits = 0;
     notifyListeners();
   }
 }
