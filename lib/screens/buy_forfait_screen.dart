@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:skiresorttemplate/providers/cart_provider.dart';
 import 'package:skiresorttemplate/providers/forfait_provider.dart';
 import 'package:skiresorttemplate/theme/skiresort_theme.dart';
-import 'package:skiresorttemplate/widgets/add_button.dart';
+import 'package:skiresorttemplate/widgets/action_button.dart';
 
 import '../widgets/add_to_cart_button.dart';
 
@@ -315,17 +315,9 @@ class _ForfaitCategory extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            InkWell(
-              onTap: onLessTap,
-              child: Container(
-                color: Colors.yellow.shade700,
-                height: 30,
-                width: 30,
-                child: Center(
-                  child:
-                      Text("-", style: Theme.of(context).textTheme.labelSmall),
-                ),
-              ),
+            ActionButton(
+              onPressed: onLessTap,
+              child: Text("-", style: Theme.of(context).textTheme.labelSmall),
             ),
             const SizedBox(
               width: 10,
@@ -337,7 +329,10 @@ class _ForfaitCategory extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            AddButton(onPressed: onPlusTap)
+            ActionButton(
+              onPressed: onPlusTap,
+              child: Text("+", style: Theme.of(context).textTheme.labelSmall),
+            )
           ],
         )
       ],

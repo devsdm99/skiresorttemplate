@@ -34,9 +34,13 @@ class SkiResortTheme {
           fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold),
       labelLarge: const TextStyle(
           fontSize: 32, color: Colors.black, fontWeight: FontWeight.bold),
-      bodySmall: TextStyle(
+      bodySmall: const TextStyle(
         fontSize: 18,
-        color: Colors.grey.shade700,
+        color: Colors.white,
+      ),
+      bodyMedium: const TextStyle(
+        fontSize: 20,
+        color: Colors.white,
       ),
     ),
     textButtonTheme: TextButtonThemeData(

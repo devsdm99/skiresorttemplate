@@ -1,15 +1,18 @@
-import 'package:flutter/cupertino.dart';
-import 'package:skiresorttemplate/models/forfait_category_model.dart';
+import 'package:flutter/material.dart';
 import 'package:skiresorttemplate/models/models.dart';
 
+import '../helpers/helpers.dart';
 import 'forfait_provider.dart';
 
 class CartProvider with ChangeNotifier {
-  final List<ItemCartModel> _items = [];
+  final List<ItemCartModel> _items = CartHelper.items;
   final double _tax = 5.75;
   final double _discount = 0.0;
 
-  double _total = 0.0;
+  double _total = CartHelper.items.fold(
+      0,
+      (previousValue, element) =>
+          previousValue + element.price * element.quantity);
   List<ItemCartModel> get items => _items;
   double get tax => _tax;
   double get discount => _discount;
@@ -24,7 +27,7 @@ class CartProvider with ChangeNotifier {
   void calculateTotal() {
     double totalTmp = 0.0;
     for (var item in _items) {
-      totalTmp += item.price! * item.quantity!;
+      totalTmp += item.price * item.quantity;
     }
     _total = totalTmp;
   }
@@ -42,15 +45,17 @@ class CartProvider with ChangeNotifier {
   }
 
   void addQuantityToItem(ItemCartModel item) {
-    item.quantity = (item.quantity ?? 0) + 1;
+    item.quantity = item.quantity + 1;
     calculateTotal();
     notifyListeners();
   }
 
   void removeQuantityToItem(ItemCartModel item) {
-    item.quantity = (item.quantity ?? 0) - 1;
-    calculateTotal();
-    notifyListeners();
+    if (item.quantity > 0) {
+      item.quantity = item.quantity - 1;
+      calculateTotal();
+      notifyListeners();
+    }
   }
 
   double getPriceForCategory(ForfaitCategory category) {
@@ -86,13 +91,13 @@ class CartProvider with ChangeNotifier {
             type: category,
             price: getPriceForCategory(
                 category), // Replace with appropriate price retrieval method
-            quantity: quantities[category],
+            quantity: quantities[category] ?? 0,
             date: date));
       } else {
         // Update quantities for existing items
         for (var item in items) {
           if (item.type == category) {
-            item.quantity = (item.quantity ?? 0) + (quantities[category] ?? 0);
+            item.quantity = item.quantity + (quantities[category] ?? 0);
           }
         }
       }
