@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../theme/theme.dart';
+import 'package:skiresorttemplate/ui/ui.dart';
 
 class AddToCartButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -10,7 +9,7 @@ class AddToCartButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding: const EdgeInsets.only(left: 25.0, right: 25, bottom: 10),
       child: Align(
         alignment: Alignment.center,
         child: InkWell(
@@ -20,20 +19,20 @@ class AddToCartButton extends StatelessWidget {
           ),
           child: Ink(
             height: 50,
-            width: MediaQuery.of(context).size.width * 0.5,
+            width: double.infinity,
             decoration: const BoxDecoration(
-              color: SkiResortTheme.primaryButtonColor,
+              color: StylesUI.primaryButtonColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(20),
               ),
             ),
             child: Center(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Add to cart",
-                    style: Theme.of(context).textTheme.labelMedium,
+                  Text("Add to cart", style: StylesUI.titleStyle),
+                  const SizedBox(
+                    width: 10,
                   ),
                   const Icon(Icons.shopping_basket)
                 ],

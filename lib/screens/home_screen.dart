@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen>
             padding: const EdgeInsets.all(8),
             child: Text(
               "Webcams",
-              style: StylesUI.subtitleStyle,
+              style: StylesUI.titleStyle,
             ),
           ),
           const SizedBox(
@@ -73,7 +73,8 @@ class _HomeScreenState extends State<HomeScreen>
                 Row(
                   children: [
                     const BigMenuButtonWidget(
-                        imgPath: "assets/home/forfaits.jpg", text: "FORFAITS"),
+                        imgPath: "assets/home/forfaits.jpg",
+                        text: "SKI PASSES"),
                     const Spacer(),
                     InkWell(
                       onTap: () {
@@ -82,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen>
                       },
                       child: const MenuItemWidget(
                           iconData: Icons.payment_rounded,
-                          text: "Compra forfait de dia"),
+                          text: "Buy day pass"),
                     )
                   ],
                 ),
@@ -93,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen>
                   children: [
                     BigMenuButtonWidget(
                         imgPath: "assets/home/teleferico.jpg",
-                        text: "VENTAJAS"),
+                        text: "ADVANTAGES"),
                     Spacer(),
                     MenuItemWidget(iconData: Icons.info, text: "Servicios")
                   ],
@@ -107,7 +108,8 @@ class _HomeScreenState extends State<HomeScreen>
                         imgPath: "assets/home/restaurant.jpg",
                         text: "RESTAURANTE"),
                     Spacer(),
-                    MenuItemWidget(iconData: Icons.restaurant, text: "Reservas")
+                    MenuItemWidget(
+                        iconData: Icons.restaurant, text: "Reservations")
                   ],
                 ),
                 const SizedBox(
@@ -116,11 +118,10 @@ class _HomeScreenState extends State<HomeScreen>
                 const Row(
                   children: [
                     BigMenuButtonWidget(
-                        imgPath: "assets/home/moto.jpg", text: "ACTIVIDADES"),
+                        imgPath: "assets/home/moto.jpg", text: "ACTIVITIES"),
                     Spacer(),
                     MenuItemWidget(
-                        iconData: Icons.calendar_month_outlined,
-                        text: "Eventos")
+                        iconData: Icons.calendar_month_outlined, text: "Events")
                   ],
                 ),
               ],

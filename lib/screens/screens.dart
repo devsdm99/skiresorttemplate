@@ -6,3 +6,4 @@ export './search_screen.dart';
 export './profile_screen.dart';
 export './buy_forfait_screen.dart';
 export './cart_screen.dart';
+export 'payment_data_screen.dart';

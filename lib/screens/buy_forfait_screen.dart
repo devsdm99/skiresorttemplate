@@ -2,12 +2,9 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:skiresorttemplate/providers/cart_provider.dart';
-import 'package:skiresorttemplate/providers/forfait_provider.dart';
-import 'package:skiresorttemplate/theme/skiresort_theme.dart';
-import 'package:skiresorttemplate/widgets/action_button.dart';
-
-import '../widgets/add_to_cart_button.dart';
+import 'package:skiresorttemplate/providers/providers.dart';
+import 'package:skiresorttemplate/ui/styles_ui.dart';
+import 'package:skiresorttemplate/widgets/widgets.dart';
 
 class BuyForfaitScreen extends StatelessWidget {
   static const routeName = "BuyForfaitScreen";
@@ -21,28 +18,10 @@ class BuyForfaitScreen extends StatelessWidget {
         Provider.of<CartProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          title: Text(
-            "Day pass",
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          actions: const [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(Icons.credit_card),
-            )
-          ],
-          leading: InkWell(
-            onTap: () {
-              forfaitProvider.resetForfaits();
-              Navigator.pop(context);
-            },
-            child: Icon(
-              Icons.arrow_back,
-              color: Theme.of(context).buttonTheme.colorScheme?.secondary,
-            ),
-          ),
+        appBar: const AppbarWidget(
+          isMainScreen: false,
+          showCart: false,
+          title: "Buy Forfait",
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -101,12 +80,8 @@ class BuyForfaitScreen extends StatelessWidget {
                   height: 30,
                 ),
                 Text(
-                  "DIRECT SALES IN THE TICKET OFFICE: obligatory provide an I.D.",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(fontWeight: FontWeight.normal),
-                ),
+                    "DIRECT SALES IN THE TICKET OFFICE: obligatory provide an I.D.",
+                    style: StylesUI.heading),
                 const SizedBox(
                   height: 30,
                 ),
@@ -160,16 +135,12 @@ class _YearsCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(category, style: Theme.of(context).textTheme.labelSmall),
+        Text(category, style: StylesUI.heading),
         Flexible(
           child: Text(
-            overflow: TextOverflow.ellipsis,
-            rangeYears,
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall
-                ?.copyWith(fontWeight: FontWeight.normal),
-          ),
+              overflow: TextOverflow.ellipsis,
+              rangeYears,
+              style: StylesUI.bodyStyle),
         ),
       ],
     );
@@ -186,6 +157,7 @@ class _ForfaitsPanel extends StatelessWidget {
     final ForfaitProvider forfaitProvider =
         Provider.of<ForfaitProvider>(context, listen: true);
     return ExpandableNotifier(
+      initialExpanded: true,
       child: ScrollOnExpand(
         theme: const ExpandableThemeData(
           headerAlignment: ExpandablePanelHeaderAlignment.center,
@@ -198,7 +170,7 @@ class _ForfaitsPanel extends StatelessWidget {
               (forfaitProvider.totalForfaits <= 0)
                   ? "Add some ski passes"
                   : "${forfaitProvider.totalForfaits} Pax",
-              style: Theme.of(context).textTheme.labelSmall,
+              style: StylesUI.heading,
             ),
           ),
           collapsed: Container(),
@@ -301,15 +273,9 @@ class _ForfaitCategory extends StatelessWidget {
           children: [
             Text(
               title,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelSmall
-                  ?.copyWith(fontWeight: FontWeight.normal),
+              style: StylesUI.bodyStyle.copyWith(fontWeight: FontWeight.bold),
             ),
-            Text(
-              subtitle,
-              style: Theme.of(context).textTheme.labelSmall,
-            )
+            Text(subtitle, style: StylesUI.subtitle)
           ],
         ),
         Row(
@@ -317,21 +283,21 @@ class _ForfaitCategory extends StatelessWidget {
           children: [
             ActionButton(
               onPressed: onLessTap,
-              child: Text("-", style: Theme.of(context).textTheme.labelSmall),
+              child: const Text("-", style: StylesUI.bodyStyle),
             ),
             const SizedBox(
               width: 10,
             ),
             Text(
               numForfaits.toString(),
-              style: Theme.of(context).textTheme.labelSmall,
+              style: StylesUI.bodyStyle,
             ),
             const SizedBox(
               width: 10,
             ),
             ActionButton(
               onPressed: onPlusTap,
-              child: Text("+", style: Theme.of(context).textTheme.labelSmall),
+              child: const Text("+", style: StylesUI.bodyStyle),
             )
           ],
         )
@@ -349,8 +315,7 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Text("Select the date",
-          style: Theme.of(context).textTheme.labelSmall),
+      child: Text("Select a date", style: StylesUI.titleStyle),
     );
   }
 }
@@ -366,15 +331,12 @@ class _CalendarPicker extends StatelessWidget {
       builder: (context, fecha, child) {
         return TextFormField(
           key: Key(fecha.toString()),
-          style: Theme.of(context)
-              .textTheme
-              .labelSmall
-              ?.copyWith(fontWeight: FontWeight.normal, color: Colors.black),
+          style: StylesUI.headlineStyle,
           initialValue: DateFormat('dd-MM-yyyy').format(fecha).toString(),
           decoration: const InputDecoration(
             icon: Icon(Icons.calendar_today), //icon of text field
           ),
-          readOnly: true, // when true user cannot edit text
+          readOnly: true,
           onTap: () async {
             DateTime? pickedDate = await showDatePicker(
               context: context,
@@ -382,12 +344,6 @@ class _CalendarPicker extends StatelessWidget {
               initialDate: DateTime.now(),
               firstDate: DateTime(2000),
               lastDate: DateTime(2101),
-              builder: (context, child) {
-                return Theme(
-                  data: SkiResortTheme.lightTheme,
-                  child: child!,
-                );
-              },
             );
             if (pickedDate != null) {
               forfaitProvider.forfaitDate = pickedDate;

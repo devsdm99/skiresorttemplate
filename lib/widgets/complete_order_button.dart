@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:skiresorttemplate/ui/ui.dart';
 
-import '../theme/theme.dart';
-
-class CompleteOrderButton extends StatelessWidget {
+class PrimaryButton extends StatelessWidget {
   final VoidCallback onTap;
-  final double totalToPay;
+  final String text;
 
-  const CompleteOrderButton(
-      {super.key, required this.onTap, required this.totalToPay});
+  const PrimaryButton({super.key, required this.onTap, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +22,15 @@ class CompleteOrderButton extends StatelessWidget {
             height: 50,
             width: double.infinity,
             decoration: const BoxDecoration(
-              color: SkiResortTheme.primaryButtonColor,
+              color: StylesUI.primaryButtonColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(20),
               ),
             ),
             child: Center(
               child: Text(
-                "Pay ${totalToPay.toStringAsFixed(2)} €",
-                style: Theme.of(context).textTheme.labelMedium,
+                text,
+                style: StylesUI.titleStyle,
               ),
             ),
           ),

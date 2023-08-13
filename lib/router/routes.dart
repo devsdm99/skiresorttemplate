@@ -12,6 +12,8 @@ class AppRoutes {
       BuyForfaitScreen.routeName: (BuildContext context) =>
           const BuyForfaitScreen(),
       CartScreen.routeName: (BuildContext context) => const CartScreen(),
+      PaymentDataScreen.routeName: (BuildContext context) =>
+          const PaymentDataScreen(),
     });
 
     return appRoutes;

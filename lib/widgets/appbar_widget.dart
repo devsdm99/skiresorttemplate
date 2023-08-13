@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skiresorttemplate/helpers/helpers.dart';
 import 'package:skiresorttemplate/providers/cart_provider.dart';
+import 'package:skiresorttemplate/ui/styles_ui.dart';
 
 import 'widgets.dart';
 
@@ -21,7 +22,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       centerTitle: isMainScreen ? false : true,
-      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+      backgroundColor: StylesUI.backgroundColor,
       leading: isMainScreen
           ? null
           : BackArrowButton(
@@ -64,7 +65,7 @@ class _CartIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Icon(
-      Icons.shopping_cart,
+      Icons.shopping_cart_outlined,
       color: Theme.of(context).iconTheme.color,
       size: 42,
     );

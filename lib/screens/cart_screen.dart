@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:skiresorttemplate/providers/providers.dart';
-import 'package:skiresorttemplate/ui/styles.ui.dart';
+import 'package:skiresorttemplate/ui/styles_ui.dart';
 
-import '../helpers/helpers.dart';
 import '../models/models.dart';
 import '../widgets/widgets.dart';
+import 'screens.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = "CartScreen";
@@ -66,13 +66,18 @@ class CartScreen extends StatelessWidget {
             bottom: 10,
             left: 0,
             right: 0,
-            child: CompleteOrderButton(
+            child: PrimaryButton(
               onTap: () => {
                 showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
+                    ),
                     context: context,
                     builder: (context) => const _PaymentCards())
               },
-              totalToPay: cartProvider.total,
+              text: "Pay ${cartProvider.total.toStringAsFixed(2)} €",
             ),
           ),
         ],
@@ -125,11 +130,11 @@ class _Total extends StatelessWidget {
         children: [
           Text(
             "Total:",
-            style: Theme.of(context).textTheme.labelMedium,
+            style: StylesUI.titleStyle,
           ),
           Text(
             "${cartProvider.total.toStringAsFixed(2)} €",
-            style: Theme.of(context).textTheme.labelMedium,
+            style: StylesUI.titleStyle,
           ),
         ],
       ),
@@ -153,11 +158,11 @@ class _Tax extends StatelessWidget {
         children: [
           Text(
             "Tax:",
-            style: Theme.of(context).textTheme.titleSmall,
+            style: StylesUI.heading,
           ),
           Text(
             "${cartProvider.tax.toStringAsFixed(2)} €",
-            style: Theme.of(context).textTheme.titleSmall,
+            style: StylesUI.heading,
           ),
         ],
       ),
@@ -181,11 +186,11 @@ class _Subtotal extends StatelessWidget {
         children: [
           Text(
             "Subtotal:",
-            style: Theme.of(context).textTheme.titleSmall,
+            style: StylesUI.heading,
           ),
           Text(
             "${cartProvider.subtotal.toStringAsFixed(2)} €",
-            style: Theme.of(context).textTheme.titleSmall,
+            style: StylesUI.heading,
           ),
         ],
       ),
@@ -198,88 +203,72 @@ class _PaymentCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CardProvider cardProvider =
+        Provider.of<CardProvider>(context, listen: true);
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                "+ Add new card",
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: Theme.of(context).primaryColor,
-                    ),
-              )),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, top: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: Text("Select a card", style: StylesUI.titleStyle)),
+                  const Align(
+                      alignment: Alignment.centerRight,
+                      child: Text("Tap to select a card",
+                          style: StylesUI.bodyStyle)),
+                ],
+              ),
+            ),
+          ],
         ),
         const SizedBox(
           height: 20,
         ),
         SizedBox(
           height: 200,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: ClassHelper.cards.length,
-            itemBuilder: (context, index) {
-              final card = ClassHelper.cards[index];
-              return _Card(card: card);
-            },
+          child: cardProvider.cards.isEmpty
+              ? Center(
+                  child: Text(
+                  "Add a new card in the next step",
+                  style: StylesUI.heading,
+                ))
+              : PageView.builder(
+                  itemCount: cardProvider.cards.length,
+                  itemBuilder: (context, index) {
+                    final card = cardProvider.cards[index];
+                    return CreditCardWidget(card: card);
+                  },
+                ),
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(50, 50),
+                  backgroundColor: StylesUI.primaryButtonColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  )),
+              onPressed: () {
+                Navigator.pushNamed(context, PaymentDataScreen.routeName);
+              },
+              child: const Icon(Icons.arrow_forward_ios),
+            ),
           ),
         ),
       ],
-    );
-  }
-}
-
-class _Card extends StatelessWidget {
-  final CreditCardModel card;
-  const _Card({required this.card});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 25.0),
-      child: Container(
-        width: 300,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Theme.of(context).primaryColor,
-              Theme.of(context).primaryColor.withOpacity(1),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Align(
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  Icons.check_circle,
-                  color: Colors.green,
-                ),
-              ),
-              Text(
-                "**** **** **** ${card.cardNumber.substring(card.cardNumber.length - 5)}",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              Text(
-                "Expires ${DateFormat("MM/yy").format(card.expiryDate)}",
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              Text(
-                card.cardHolderName,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
@@ -355,7 +344,7 @@ class _DetailCartItem extends StatelessWidget {
             children: [
               Text(
                 "Day: ${format.format(forfait.date)}",
-                style: Theme.of(context).textTheme.labelSmall,
+                style: StylesUI.bodyStyle,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -368,14 +357,14 @@ class _DetailCartItem extends StatelessWidget {
                     children: [
                       Text(
                         "$forfaitType ${forfait.name}",
-                        style: Theme.of(context).textTheme.labelSmall,
+                        style: StylesUI.titleStyle,
                       ),
                       const SizedBox(
                         height: 10,
                       ),
                       Text(
                         "${forfait.price.toStringAsFixed(2)} €",
-                        style: Theme.of(context).textTheme.labelSmall,
+                        style: StylesUI.bodyStyle,
                       ),
                     ],
                   ),
@@ -383,8 +372,7 @@ class _DetailCartItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ActionButton(
-                          child: Text("+",
-                              style: Theme.of(context).textTheme.labelSmall),
+                          child: const Text("+", style: StylesUI.bodyStyle),
                           onPressed: () => {
                                 context
                                     .read<CartProvider>()
@@ -395,7 +383,7 @@ class _DetailCartItem extends StatelessWidget {
                       ),
                       Text(
                         forfait.quantity.toString(),
-                        style: Theme.of(context).textTheme.labelSmall,
+                        style: StylesUI.bodyStyle,
                       ),
                       const SizedBox(
                         height: 5,
