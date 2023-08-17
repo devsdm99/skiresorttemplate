@@ -4,8 +4,14 @@ import 'package:skiresorttemplate/ui/ui.dart';
 class PrimaryButton extends StatelessWidget {
   final VoidCallback onTap;
   final String text;
+  final bool isDisabled;
 
-  const PrimaryButton({super.key, required this.onTap, required this.text});
+  const PrimaryButton({
+    super.key,
+    required this.onTap,
+    required this.text,
+    required this.isDisabled,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +20,16 @@ class PrimaryButton extends StatelessWidget {
       child: Align(
         alignment: Alignment.center,
         child: InkWell(
-          onTap: onTap,
+          onTap: isDisabled ? null : onTap,
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
           child: Ink(
             height: 50,
             width: double.infinity,
-            decoration: const BoxDecoration(
-              color: StylesUI.primaryButtonColor,
-              borderRadius: BorderRadius.all(
+            decoration: BoxDecoration(
+              color: isDisabled ? StylesUI.grey : StylesUI.primaryButtonColor,
+              borderRadius: const BorderRadius.all(
                 Radius.circular(20),
               ),
             ),

@@ -71,6 +71,12 @@ class CartProvider with ChangeNotifier {
     }
   }
 
+  void clearCart() {
+    _items.clear();
+    calculateTotal();
+    notifyListeners();
+  }
+
   void addForfaitsToCart(
       int adultForfaits, int juniorForfaits, int childForfaits, DateTime date) {
     //check if there is already a forfait in the cart of the same type, if exists, update the quantity

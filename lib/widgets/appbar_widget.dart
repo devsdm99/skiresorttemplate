@@ -40,7 +40,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
                     alignment: Alignment.center,
                     children: [
                       _CartIcon(),
-                      _ItemsInCart(),
+                      //_ItemsInCart(),
                     ],
                   ),
                 ),
@@ -65,9 +65,9 @@ class _CartIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Icon(
-      Icons.shopping_cart_outlined,
+      Icons.notifications,
       color: Theme.of(context).iconTheme.color,
-      size: 42,
+      size: 32,
     );
   }
 }
@@ -82,17 +82,13 @@ class _ItemsInCart extends StatelessWidget {
     return Selector<CartProvider, int>(
       selector: (_, provider) => provider.items.length,
       builder: (context, value, child) {
-        return Positioned(
-          top: 4,
-          child: CircleAvatar(
-            radius: 10,
-            backgroundColor: Theme.of(context).buttonTheme.colorScheme?.primary,
-            child: Center(
-              child: Text(
-                value.toString(),
-                style:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
+        return CircleAvatar(
+          radius: 10,
+          backgroundColor: StylesUI.primaryColor,
+          child: Center(
+            child: Text(
+              value.toString(),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
         );

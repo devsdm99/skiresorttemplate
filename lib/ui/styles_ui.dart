@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 abstract class StylesUI {
   static const Color primaryColor = Color.fromRGBO(37, 95, 221, 1);
@@ -8,7 +9,8 @@ abstract class StylesUI {
   static const Color primaryButtonColor = Color.fromRGBO(251, 192, 45, 1);
   static const Color transparent = Colors.transparent;
   static const Color grey = Color.fromRGBO(112, 112, 112, 1);
-
+  static Color randomColor =
+      Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
   static TextStyle homeTypeStyle = const TextStyle(
     color: Colors.white,
   );

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:skiresorttemplate/models/models.dart';
-import 'package:skiresorttemplate/providers/home_provider.dart';
-import 'package:skiresorttemplate/screens/buy_forfait_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:skiresorttemplate/screens/screens.dart';
 import 'package:skiresorttemplate/ui/ui.dart';
 import 'package:skiresorttemplate/widgets/widgets.dart';
+import '../providers/providers.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "HomeScreen";
@@ -27,30 +26,80 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final HomeProvider homeProvider =
-        Provider.of<HomeProvider>(context, listen: false);
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text("Welcome",
+                style: StylesUI.titleStyle
+                    .copyWith(fontSize: 35, color: StylesUI.primaryColor)),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.15,
-            child: PageView.builder(
-              onPageChanged: ((value) {}),
-              itemCount: homeProvider.statistics.length,
-              itemBuilder: (context, index) {
-                TimeStatisticsModel model = homeProvider.statistics[index];
-                return _SectorStatistics(model: model);
-              },
+            height: 150,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Container(
+                    height: 75,
+                    width: 270,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Image.asset(
+                            "assets/items/snowboard.png",
+                            scale: 5,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "10% DISCOUNT",
+                                overflow: TextOverflow.fade,
+                                maxLines: 1,
+                                softWrap: false,
+                                style: StylesUI.titleStyle.copyWith(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              const Text(
+                                "Snowboard products",
+                                overflow: TextOverflow.fade,
+                                maxLines: 1,
+                                softWrap: false,
+                                style: StylesUI.bodyStyle,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
-          //const _SectorStatistics(),
+          const SizedBox(
+            height: 10,
+          ),
+          const _WeatherForecast(),
           const SizedBox(
             height: 10,
           ),
           Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               "Webcams",
               style: StylesUI.titleStyle,
@@ -211,6 +260,73 @@ class _HomeScreenState extends State<HomeScreen>
   }
 }
 
+class _WeatherForecast extends StatelessWidget {
+  const _WeatherForecast({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Weather forecast", style: StylesUI.titleStyle),
+          Text(HomeProvider.statistics.weather.toUpperCase(),
+              style: StylesUI.bodyStyle),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Max",
+                    style: StylesUI.headlineStyle,
+                  ),
+                  Text("${HomeProvider.statistics.maxTemp}ºC",
+                      style: StylesUI.titleStyle.copyWith(
+                          color: StylesUI.primaryColor, fontSize: 25)),
+                ],
+              ),
+              const SizedBox(
+                width: 30,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Min",
+                    style: StylesUI.headlineStyle,
+                  ),
+                  Text("${HomeProvider.statistics.minTemp}ºC",
+                      style: StylesUI.titleStyle.copyWith(
+                          color: StylesUI.primaryColor, fontSize: 25)),
+                ],
+              ),
+              const Spacer(),
+              const Align(
+                alignment: Alignment.centerRight,
+                child: Icon(
+                  Icons.wb_sunny_outlined,
+                  color: StylesUI.primaryColor,
+                  size: 60,
+                ),
+              ),
+              const SizedBox(
+                width: 30,
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class _Webcams extends StatelessWidget {
   const _Webcams({
     Key? key,
@@ -259,93 +375,6 @@ class _WebcamWidget extends StatelessWidget {
             fit: BoxFit.fill,
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _SectorStatistics extends StatelessWidget {
-  const _SectorStatistics({Key? key, required this.model}) : super(key: key);
-  final TimeStatisticsModel model;
-  @override
-  Widget build(BuildContext context) {
-    final HomeProvider homeProvider =
-        Provider.of<HomeProvider>(context, listen: false);
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.15,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20))),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Weather at - ${model.sector}",
-                style: StylesUI.homeTypeStyle
-                    .copyWith(fontWeight: FontWeight.bold, fontSize: 18)),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                children: [
-                  Icon(
-                    homeProvider.icons[model.weather],
-                    color: Colors.white,
-                  ),
-                  Text(
-                    "${model.weather}",
-                    style: const TextStyle(color: Colors.white),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Text("${model.averageTemp}°C",
-                      style: StylesUI.homeTypeStyle
-                          .copyWith(fontWeight: FontWeight.bold, fontSize: 20)),
-                  Text(
-                    "${model.maxTemp}° | ${model.minTemp}°",
-                    style: StylesUI.homeTypeStyle,
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    "${model.percentagePrep}%",
-                    style: StylesUI.homeTypeStyle
-                        .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  Text(
-                    "Precipitation",
-                    style: StylesUI.homeTypeStyle,
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    "${model.windSpeed}kph",
-                    style: StylesUI.homeTypeStyle
-                        .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  Text(
-                    "Wind",
-                    style: StylesUI.homeTypeStyle,
-                  )
-                ],
-              )
-            ],
-          )
-        ],
       ),
     );
   }

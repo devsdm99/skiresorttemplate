@@ -67,6 +67,7 @@ class CartScreen extends StatelessWidget {
             left: 0,
             right: 0,
             child: PrimaryButton(
+              isDisabled: cartProvider.items.isEmpty,
               onTap: () => {
                 showModalBottomSheet(
                     shape: const RoundedRectangleBorder(
@@ -77,7 +78,9 @@ class CartScreen extends StatelessWidget {
                     context: context,
                     builder: (context) => const _PaymentCards())
               },
-              text: "Pay ${cartProvider.total.toStringAsFixed(2)} €",
+              text: cartProvider.items.isNotEmpty
+                  ? "Pay ${cartProvider.total.toStringAsFixed(2)} €"
+                  : "Add items to cart",
             ),
           ),
         ],

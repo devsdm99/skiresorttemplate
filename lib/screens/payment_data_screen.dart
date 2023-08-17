@@ -5,10 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:skiresorttemplate/helpers/helpers.dart';
 import 'package:skiresorttemplate/providers/payment_provider.dart';
 import 'package:skiresorttemplate/providers/providers.dart';
+import 'package:skiresorttemplate/screens/paypal_payment_screen.dart';
 import 'package:skiresorttemplate/ui/ui.dart';
 import 'package:skiresorttemplate/widgets/widgets.dart';
 
 import '../models/models.dart';
+import 'base_screen.dart';
 
 class PaymentDataScreen extends StatelessWidget {
   static const routeName = "CheckoutScreen";
@@ -69,7 +71,30 @@ class PaymentDataScreen extends StatelessWidget {
                             const SizedBox(
                               height: 30,
                             ),
-                            _buildPaymentForms(context)
+                            _buildPaymentForms(context),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Use promo code",
+                              style: StylesUI.heading,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(20),
+                                CardNumberInputFormatter()
+                              ],
+                              decoration: InputDecoration(
+                                  border: const OutlineInputBorder(),
+                                  hintText: "Promo code",
+                                  filled: true,
+                                  fillColor: Colors.grey[200]),
+                            ),
                           ],
                         ),
                       ),
@@ -152,8 +177,40 @@ class _CompletePaymentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final paymentProvider =
+        Provider.of<PaymentProvider>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        switch (paymentProvider.selectedPaymentMethod.paymentType) {
+          case PaymentEnum.paypal:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => PaypalPayment(
+                  onFinish: (number) async {},
+                ),
+              ),
+            );
+            break;
+          case PaymentEnum.credit:
+            // TODO: Handle this case.
+            break;
+          case PaymentEnum.wallet:
+            // TODO: Handle this case.
+            break;
+          case PaymentEnum.other:
+            // TODO: Handle this case.
+            break;
+        }
+        cartProvider.clearCart();
+        const snackBar = SnackBar(
+          backgroundColor: Colors.green,
+          content: Text("Payment completed"),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.of(context)
+            .popUntil(ModalRoute.withName(BaseScreen.routeName));
+      },
       child: Ink(
         height: 75,
         width: double.infinity,
@@ -175,7 +232,76 @@ class _CardPaymentForm extends StatelessWidget {
         Provider.of<CardProvider>(context, listen: false);
     return cardProvider.selectedCard == null
         ? const _AddCardForm()
-        : Center(child: CreditCardWidget(card: cardProvider.selectedCard!));
+        : const _CurrentSelectedCardForm();
+  }
+}
+
+class _CurrentSelectedCardForm extends StatelessWidget {
+  const _CurrentSelectedCardForm();
+
+  @override
+  Widget build(BuildContext context) {
+    final CardProvider cardProvider =
+        Provider.of<CardProvider>(context, listen: false);
+    CardType type = CardHelper.getCardTypeFrmNumber(
+        cardProvider.selectedCard?.cardNumber ?? "");
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text("Selected card", style: StylesUI.heading),
+            const Spacer(),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Change",
+                  style: StylesUI.bodyStyle
+                      .copyWith(color: StylesUI.primaryColor)),
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Container(
+          width: double.infinity,
+          height: 70,
+          decoration: BoxDecoration(
+            color: StylesUI.grey.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CardHelper.getCardIcon(type) ?? const Icon(Icons.credit_card),
+                const SizedBox(
+                  width: 40,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(cardProvider.selectedCard?.cardHolderName ?? "",
+                          style: StylesUI.titleStyle),
+                      Text(
+                          "Owner card ending **${cardProvider.selectedCard?.cardNumber.substring(cardProvider.selectedCard!.cardNumber.length - 2)}",
+                          style: StylesUI.bodyStyle),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
   }
 }
 
